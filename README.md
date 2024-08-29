@@ -34,3 +34,19 @@ This Python script is designed to interface with the ADXL345 accelerometer via a
 
 - The script is designed to be run from the command line.
 - Requires appropriate permissions to execute the commands successfully.
+
+## Summary of Changes to adxl345 driver
+
+### 1. Operating Like a Server - Listening for Commands
+The code has been modified to allow the application to operate like a server, listening for commands via a named pipe (`/tmp/adxl345spi_fifo`). The following functions were introduced or modified:
+
+- **`listenForCommands()`**: A new function added to continuously listen for commands (`start`, `stop`, `quit`) from the named pipe. Based on the command received, the data collection is either started, stopped, or the application is terminated.
+- **`startDataCollection()` and `stopDataCollection()`**: Functions added to control the starting and stopping of the data collection thread. These are invoked based on the commands received in `listenForCommands()`.
+
+### 2. Adding Support for 3 Accelerometers
+The code was extended to support three ADXL345 accelerometers. The following modifications were made:
+
+- **`selectChip()`**: A helper function to manually control the Chip Select (CS) lines of the three accelerometers. It sets the appropriate CS pin low for the selected accelerometer.
+- **`dataCollectionThread()`**: The thread function was modified to read data from three accelerometers. It reads data from each accelerometer by selecting the corresponding CS pin and performs SPI communication.
+- **SPI Initialization**: The SPI interface and GPIO pins were configured to handle three accelerometers (CS0, CS1, and CS2).
+
