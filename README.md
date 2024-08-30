@@ -38,18 +38,22 @@ This Python script is designed to interface with the ADXL345 accelerometer via a
 - The script is designed to be run from the command line.
 - Requires appropriate permissions to execute the commands successfully.
 
-## Summary of Changes to adxl345 driver
+## Technical Summary of Modifications to the ADXL345 Driver
 
-### 1. Operating Like a Server - Listening for Commands
-The code has been modified to allow the application to operate like a server, listening for commands via a named pipe (`/tmp/adxl345spi_fifo`). The following functions were introduced or modified:
+### 1. Server-Like Operation - Command Listening and Control
 
-- **`listenForCommands()`**: A new function added to continuously listen for commands (`start`, `stop`, `quit`) from the named pipe. Based on the command received, the data collection is either started, stopped, or the application is terminated.
-- **`startDataCollection()` and `stopDataCollection()`**: Functions added to control the starting and stopping of the data collection thread. These are invoked based on the commands received in `listenForCommands()`.
+The driver has been restructured to enable it to function as a server, listening for and processing commands via a named pipe (`/tmp/adxl345spi_fifo`). The following key components were added or modified:
 
-### 2. Adding Support for 3 Accelerometers
-The code was extended to support three ADXL345 accelerometers. The following modifications were made:
+- **`listenForCommands()`**: Introduced as a continuous command listener that reads instructions (`start`, `stop`, `quit`) from the named pipe. Based on the received command, it triggers corresponding actions such as initiating data collection, halting it, or shutting down the application.
 
-- **`selectChip()`**: A helper function to manually control the Chip Select (CS) lines of the three accelerometers. It sets the appropriate CS pin low for the selected accelerometer.
-- **`dataCollectionThread()`**: The thread function was modified to read data from three accelerometers. It reads data from each accelerometer by selecting the corresponding CS pin and performs SPI communication.
-- **SPI Initialization**: The SPI interface and GPIO pins were configured to handle three accelerometers (CS0, CS1, and CS2).
+- **`startDataCollection()` and `stopDataCollection()`**: Implemented as control functions to manage the data collection process. These functions are called within `listenForCommands()` to start or stop the data acquisition thread based on the incoming commands.
 
+### 2. Enhanced Support for Triple Accelerometer Configuration
+
+The driver was expanded to support data acquisition from three ADXL345 accelerometers. The following adjustments were made:
+
+- **`selectChip(uint8_t chip)`**: A new utility function introduced to manually control the Chip Select (CS) lines for the three accelerometers. This function asserts the appropriate CS line (CS0, CS1, or CS2) based on the `chip` parameter, ensuring the correct accelerometer is selected for SPI communication.
+
+- **`dataCollectionThread()`**: Modified to handle concurrent data acquisition from all three accelerometers. The thread iterates through each accelerometer by selecting the corresponding CS line via `selectChip()`, performing SPI communication to read sensor data sequentially from each accelerometer.
+
+- **SPI Interface and GPIO Configuration**: Adjusted to accommodate the three accelerometers. The GPIO pins were configured to support multiple Chip Select lines (CS0, CS1, CS2), ensuring accurate and independent communication with each ADXL345 sensor.
