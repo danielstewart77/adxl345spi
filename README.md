@@ -1,5 +1,5 @@
 # diagram for CS pins
-![image](https://github.com/user-attachments/assets/0f07b8ea-7062-4f55-98ac-bffe4ab504de)
+![ADXL345spi_pinout](https://github.com/user-attachments/assets/9dd91471-7fa5-4023-b669-858dd7de4aa4)
 
 # install python (if not already installed)
 `sudo apt-get install python3`
