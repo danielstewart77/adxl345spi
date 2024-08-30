@@ -1,11 +1,29 @@
 # diagram for CS pins
 ![ADXL345spi_pinout](https://github.com/user-attachments/assets/9dd91471-7fa5-4023-b669-858dd7de4aa4)
 
-# install python (if not already installed)
-`sudo apt-get install python3`
+# enable spi on the pi
+`sudo raspi-config`
 
-# clone repo:
+![select interface options](image.png)
+![Enable SPI](image-1.png)
+
+## install python (if not already installed)
+`sudo apt-get install python3`
+`sudo apt install python3-spidev`
+`sudo apt install raspberrypi-kernel-headers`
+`sudo apt install libpython3-dev python3-pip`
+`ls /dev/spi*`
+
+## clone repo:
 `git clone https://github.com/danielstewart77/adxl345spi.git`
+`cd adxl345spi`
+
+## download pigpio-master
+`wget https://github.com/joan2937/pigpio/archive/master.zip`
+`unzip master.zip`
+`cd pigpio-master`
+`make`
+`sudo make install`
 
 # launch console app in virtual environment:
 `venv/bin/python3 console_driver.py`
