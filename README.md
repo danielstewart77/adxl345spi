@@ -1,11 +1,12 @@
 # diagram for CS pins
-![ADXL345spi_pinout](https://github.com/user-attachments/assets/9dd91471-7fa5-4023-b669-858dd7de4aa4)
+<img width="540" alt="interface_options" src="https://github.com/user-attachments/assets/9dd91471-7fa5-4023-b669-858dd7de4aa4">
 
 # enable spi on the pi
 `sudo raspi-config`
 
-![select interface options](image.png)
-![Enable SPI](image-1.png)
+<img width="540" alt="interface_options" src="https://github.com/user-attachments/assets/a591c801-454a-493b-9a5c-e1adf38396d8">
+
+<img width="541" alt="enable_spi" src="https://github.com/user-attachments/assets/2dd9b149-3348-4186-b72a-def40f93bb00">
 
 ## install python (if not already installed)
 `sudo apt-get install python3`
