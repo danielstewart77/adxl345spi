@@ -25,6 +25,7 @@
 `cd pigpio-master`
 `make`
 `sudo make install`
+`gcc -o ../adxl345spi ../adxl345spi_triple.c -lpigpio -pthread`
 
 # launch console app in virtual environment:
 `venv/bin/python3 console_driver.py`
