@@ -1,3 +1,6 @@
+# diagram for CS pins
+![image](https://github.com/user-attachments/assets/0f07b8ea-7062-4f55-98ac-bffe4ab504de)
+
 # install python (if not already installed)
 `sudo apt-get install python3`
 
