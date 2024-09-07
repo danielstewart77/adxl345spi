@@ -1,4 +1,5 @@
 import subprocess
+import time
 from datetime import datetime
 
 def execute_command(command):
@@ -17,14 +18,17 @@ def quit_application():
     execute_command('echo "quit" > /tmp/adxl345spi_fifo')
 
 def main():
-    # Step 1: Execute the initial command with the current datetime
+    # Execute the initial command with the current datetime
     current_datetime = datetime.now().strftime('%Y%m%d_%H%M%S')
     execute_command(f'sudo ./adxl345spi -s {current_datetime}.csv -f 3200')
 
-    # Step 2: Change file permissions
+    # Wait for one second to allow the named pipe to be created
+    time.sleep(1)
+
+    # Change file permissions
     execute_command('sudo chmod 666 /tmp/adxl345spi_fifo')
 
-    # Step 3: Console interface for user interaction
+    # Console interface for user interaction
     while True:
         print("ADXL345 Controller")
         print("1. Start")
