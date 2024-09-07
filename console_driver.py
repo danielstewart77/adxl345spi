@@ -21,7 +21,8 @@ def main():
     # Execute the initial command with the current datetime
     current_datetime = datetime.now().strftime('%Y%m%d_%H%M%S')
     execute_command(f'sudo ./adxl345spi -s {current_datetime}.csv -f 3200')
-
+    
+    # The adxl345spi driver creates a named pipe /tmp/adxl345spi_fifo
     # Wait for one second to allow the named pipe to be created
     time.sleep(1)
 
