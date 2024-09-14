@@ -16,6 +16,7 @@ def stop_application():
 
 def quit_application():
     execute_command('echo "quit" > /tmp/adxl345spi_fifo')
+    execute_command('rm /tmp/adxl345spi_fifo')
 
 def main():
     # Execute the initial command with the current datetime
