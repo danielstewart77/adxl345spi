@@ -5,17 +5,18 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Ensure no other apt processes are running
+# Ensure no other apt processes are running with a timeout
+timeout=30  # 30 seconds timeout
 while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     echo "Waiting for other apt processes to finish..."
     sleep 2
+    timeout=$((timeout - 2))
+    if [ $timeout -le 0 ]; then
+        echo "Timeout reached while waiting for apt lock. Exiting."
+        exit 1
+    fi
 done
 
-# Check for internet connection
-if ! ping -c 1 google.com &> /dev/null; then
-    echo "No internet connection. Cannot install dependencies."
-    exit 1
-fi
 
 # Check if GCC is installed
 if ! command_exists gcc; then
