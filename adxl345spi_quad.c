@@ -115,7 +115,7 @@ void *dataCollectionThread(void *arg) {
         int bytes1 = readBytes(h1, data1, 7, 8);  // CS0 for the first accelerometer
         int bytes2 = readBytes(h1, data2, 7, 7);  // CS1 for the second accelerometer
         int bytes3 = readBytes(h1, data3, 7, 22); // CS2 for the third accelerometer
-	int bytes4 = readBytes(h1, data3, 7, 27); // CS3 for the fourth accelerometer
+	    int bytes4 = readBytes(h1, data4, 7, 27); // CS3 for the fourth accelerometer
 
 	if (bytes3 != 7) {
     		printf("Error reading 3rd sensor, bytes read: %d\n", bytes3);
@@ -137,7 +137,7 @@ void *dataCollectionThread(void *arg) {
             y3 = (data3[4] << 8) | data3[3];
             z3 = (data3[6] << 8) | data3[5];
 
-	    x4 = (data4[2] << 8) | data4[1];
+	        x4 = (data4[2] << 8) | data4[1];
             y4 = (data4[4] << 8) | data4[3];
             z4 = (data4[6] << 8) | data4[5];
 
@@ -195,6 +195,7 @@ void stopDataCollection() {
 
 void listenForCommands() {
     const char *fifo = "./adxl345spi_fifo";
+    unlink(fifo);  // Remove any existing FIFO file to clear previous contents
     mkfifo(fifo, 0666);
 
     char command[256];
@@ -314,9 +315,8 @@ int main(int argc, char *argv[]) {
     // Add a small delay to ensure all sensors are ready
     time_sleep(0.01);  // 10 ms delay
 
-
-    // printf("CS2 state: %d\n", gpioRead(22));
-    // printf("CS3 state: %d\n", gpioRead(27));
+    // Automatically start data collection
+    startDataCollection();
 
     listenForCommands();
 
