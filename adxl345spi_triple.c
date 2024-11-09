@@ -170,7 +170,7 @@ void stopDataCollection() {
 }
 
 void listenForCommands() {
-    const char *fifo = "/tmp/adxl345spi_fifo";
+    const char *fifo = "./adxl345spi_fifo";
     mkfifo(fifo, 0666);
 
     char command[256];
