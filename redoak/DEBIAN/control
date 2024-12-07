@@ -1,4 +1,4 @@
-Package: redoak installer
+Package: redoak-installer
 Version: 0.1.0
 Section: utils
 Priority: optional
