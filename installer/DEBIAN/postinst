@@ -1,0 +1,54 @@
+#!/bin/bash
+set -e
+
+# Define the installation directory
+INSTALL_DIR="/opt/redoak"
+
+# Clone the Git repository
+if [ ! -d "$INSTALL_DIR" ]; then
+    git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
+fi
+
+# Make the Python script executable
+chmod +x "$INSTALL_DIR/redoak_installer.py"
+
+# Create a desktop shortcut
+cat <<EOF > /usr/share/applications/redoak.desktop
+[Desktop Entry]
+Version=1.0
+Name=RedOak
+Comment=Launch RedOak
+Exec=/usr/local/bin/redoak-launcher
+Icon=$INSTALL_DIR/static/icon.png
+Terminal=false
+Type=Application
+Categories=Utility;
+EOF
+
+# Create a launcher script
+cat <<EOF > /usr/local/bin/redoak-launcher
+#!/bin/bash
+python3 "$INSTALL_DIR/launch.py"
+EOF
+chmod +x /usr/local/bin/redoak-launcher
+
+# Configure system startup
+cat <<EOF > /etc/systemd/system/redoak.service
+[Unit]
+Description=MyApp Startup Service
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/redoak-launcher
+Restart=always
+
+[Install]
+WantedBy=default.target
+EOF
+
+# Enable the systemd service
+systemctl enable redoak.service
+systemctl start redoak.service
+
+echo "Installation complete. RedOak is ready to use."
