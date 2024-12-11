@@ -28,7 +28,7 @@ EOF
 # Create a launcher script
 cat <<EOF > /usr/local/bin/redoak-launcher
 #!/bin/bash
-python3 "$INSTALL_DIR/launch.py"
+python3 "$INSTALL_DIR/web.py"
 EOF
 chmod +x /usr/local/bin/redoak-launcher
 
