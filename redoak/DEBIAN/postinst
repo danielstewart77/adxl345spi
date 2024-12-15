@@ -10,7 +10,7 @@ if [ ! -d "$INSTALL_DIR" ]; then
 fi
 
 # Make the Python script executable
-chmod +x "$INSTALL_DIR/redoak_installer.py"
+chmod +x "$INSTALL_DIR/redoak_installer.sh"
 
 # Create a desktop shortcut
 cat <<EOF > /usr/share/applications/redoak.desktop

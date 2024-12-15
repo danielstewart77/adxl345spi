@@ -55,5 +55,5 @@ else
 fi
 
 # Start the Python application
-echo "Starting console_driver.py..."
-python3 console_driver.py
+echo "Installed successfully!"
+#python3 console_driver.py
