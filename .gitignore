@@ -1,0 +1,44 @@
+# Ignore the virtual environment directory
+venv/
+
+# Ignore node_modules directory
+node_modules/
+
+# Ignore log files
+*.log
+
+# Ignore build directories
+dist/
+build/
+
+# Ignore environment variable files
+.env
+.env.local
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE specific files
+.vscode/
+.idea/
+*.iml
+
+# Ignore compiled Python files
+*.pyc
+__pycache__/
+
+# Ignore compiled C/C++ files
+*.o
+*.obj
+*.exe
+*.out
+
+# Ignore compiled Java files
+*.class
+
+# Ignore temporary files
+*.tmp
+*.swp
+*.bak
+*.old
