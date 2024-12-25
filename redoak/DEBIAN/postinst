@@ -1,46 +1,45 @@
 #!/bin/bash
 set -e
 
-# Define the installation directory
+# Define the installation directory and virtual environment path
 INSTALL_DIR="/opt/redoak"
+VENV_DIR="$INSTALL_DIR/venv"
 
-# Clone the Git repository
+# Create the installation directory if it doesn't exist
 if [ ! -d "$INSTALL_DIR" ]; then
-    git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
+    mkdir -p "$INSTALL_DIR"
 fi
 
-# Ensure the Python dependencies are installed
-if [ -f /opt/redoak/requirements.txt ]; then
-    pip3 install -r /opt/redoak/requirements.txt
+# Create a virtual environment
+echo "Creating virtual environment..."
+python3 -m venv "$VENV_DIR"
+
+# Activate the virtual environment and install dependencies
+echo "Installing Python dependencies in the virtual environment..."
+"$VENV_DIR/bin/pip" install --upgrade pip setuptools
+if [ -f "$INSTALL_DIR/requirements.txt" ]; then
+    "$VENV_DIR/bin/pip" install -r "$INSTALL_DIR/requirements.txt"
+fi
+
+# Clone the Git repository if necessary
+if [ ! -d "$INSTALL_DIR/app" ]; then
+    git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR/app"
 fi
 
 # Make the Python script executable
-chmod +x "$INSTALL_DIR/redoak_installer.sh"
-
-# Create a desktop shortcut
-cat <<EOF > /usr/share/applications/redoak.desktop
-[Desktop Entry]
-Version=1.0
-Name=RedOak
-Comment=Launch RedOak
-Exec=/usr/local/bin/redoak-launcher
-Icon=$INSTALL_DIR/icon.png
-Terminal=false
-Type=Application
-Categories=Utility;
-EOF
+chmod +x "$INSTALL_DIR/app/web.py"
 
 # Create a launcher script
 cat <<EOF > /usr/local/bin/redoak-launcher
 #!/bin/bash
-python3 "$INSTALL_DIR/web.py"
+"$VENV_DIR/bin/python" "$INSTALL_DIR/app/web.py"
 EOF
 chmod +x /usr/local/bin/redoak-launcher
 
 # Configure system startup
 cat <<EOF > /etc/systemd/system/redoak.service
 [Unit]
-Description=MyApp Startup Service
+Description=RedOak Service
 After=network.target
 
 [Service]
@@ -52,7 +51,7 @@ Restart=always
 WantedBy=default.target
 EOF
 
-# Enable the systemd service
+# Enable and start the systemd service
 systemctl enable redoak.service
 systemctl start redoak.service
 
