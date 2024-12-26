@@ -46,13 +46,18 @@ class TitleBar(QWidget):
 
         self.close_button = QPushButton("X")
         self.close_button.setStyleSheet("""
-            background-color: #ff5555; 
-            border: none; 
-            font-weight: bold; 
-            padding: 5px;
-            font-size: 16px;  /* Increase font size */
-            color: white;     /* Change text color to white for contrast */
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);  /* Add a subtle shadow */
+            QPushButton {
+                background-color: #ff5555; 
+                border: none; 
+                font-weight: bold; 
+                padding: 5px;
+                font-size: 20px;  /* Increase font size further */
+                color: white;
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+                font-family: 'Arial'; /* or any font you know works well */
+                min-width: 30px;  /* Ensure button has enough space */
+                min-height: 30px;
+            }
         """)
         self.close_button.clicked.connect(parent.close)
 
