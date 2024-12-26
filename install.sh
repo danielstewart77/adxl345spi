@@ -9,7 +9,7 @@ sudo systemctl stop redoak.service
 sudo systemctl daemon-reload
 sudo rm -f -r /opt/redoak
 sudo rm -f /usr/local/bin/redoak-launcher
-ech "Finished cleaning up. Proceeding with installation."
+echo "Finished cleaning up. Proceeding with installation."
 
 # Helper function to check if a command exists
 command_exists() {
@@ -92,6 +92,10 @@ fi
 
 # Make the Python script executable
 chmod +x "$INSTALL_DIR/web.py"
+
+# give the user ownership of the installation directory
+sudo chown -R $USER:$USER "$INSTALL_DIR"
+sudo chmod -R 755 "$INSTALL_DIR"
 
 # Create a launcher script
 cat <<EOF > /usr/local/bin/redoak-launcher
