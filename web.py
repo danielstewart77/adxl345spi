@@ -23,18 +23,27 @@ def stop():
     stop_application()
     return 'stop'
 
-@app.route('/quit')
+@app.route('/quit', methods=['POST'])  # Use POST for safety
 def quit():
-    quit_application()
     try:
-        # Assuming your Flask thread has a reference (e.g., flask_thread)
-        flask_thread.join(timeout=1)  # Wait for 1 second for Flask thread to finish
 
-        sys.exit(0)  # Graceful termination
-    except Error as e:  # Handle potential timeout or other errors
-        return e.__str__() 
+        def shutdown_server():
+            func = request.environ.get('werkzeug.server.shutdown')
+            if func is None:
+                raise RuntimeError('Not running with the Werkzeug Server')
+            func()
 
-    return 'Server shutting down...'
+        shutdown_server()
+
+        # Wait for Flask thread to (hopefully) finish processing requests
+        flask_thread.join(timeout=1)
+
+        # Terminate the process
+        os._exit(0)
+
+        return 'Server shutting down...'
+    except Exception as e:
+        return f"Error: {e}"
 
 def run_flask():
     """Run the Flask app."""
