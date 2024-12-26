@@ -58,15 +58,15 @@ git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
 echo "adxl345spi cloned to " + $INSTALL_DIR
 
 # Create a virtual environment
-echo "Creating virtual environment..."
-python3 -m venv "$VENV_DIR"
+# echo "Creating virtual environment..."
+# python3 -m venv "$VENV_DIR"
 
 # Activate the virtual environment and install dependencies
-echo "Installing Python dependencies in the virtual environment..."
-"$VENV_DIR/bin/pip" install --upgrade pip setuptools
-if [ -f "$INSTALL_DIR/requirements.txt" ]; then
-    "$VENV_DIR/bin/pip" install -r "$INSTALL_DIR/requirements.txt"
-fi
+# echo "Installing Python dependencies in the virtual environment..."
+# "$VENV_DIR/bin/pip" install --upgrade pip setuptools
+# if [ -f "$INSTALL_DIR/requirements.txt" ]; then
+#     "$VENV_DIR/bin/pip" install -r "$INSTALL_DIR/requirements.txt"
+# fi
 
 # Check if adxl345spi executable exists
 if [ ! -f "$INSTALL_DIR/adxl345spi" ]; then
@@ -134,11 +134,11 @@ chmod +x "$SHORTCUT_FILE"
 echo "Shortcut added to taskbar successfully."
 
 # Add shortcut to the Ubuntu user's taskbar (for GNOME)
-USER_DIR="/home/ubuntu/.local/share/applications"
-USER_SHORTCUT_FILE="$USER_DIR/redoak.desktop"
+# USER_DIR="/home/ubuntu/.local/share/applications"
+# USER_SHORTCUT_FILE="$USER_DIR/redoak.desktop"
 
-mkdir -p "$USER_DIR"
-cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
-gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed -e "s/]$/, 'redoak.desktop']/")"
+# mkdir -p "$USER_DIR"
+# cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
+# gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed -e "s/]$/, 'redoak.desktop']/")"
 
 echo "Installation complete. RedOak is ready to use."
