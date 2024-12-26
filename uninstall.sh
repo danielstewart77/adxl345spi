@@ -5,5 +5,4 @@ sudo rm -f /etc/systemd/system/redoak.service
 sudo systemctl disable redoak.service
 sudo systemctl stop redoak.service
 sudo systemctl daemon-reload
-# rm -r -f adxl345spi/
 rm -f /usr/local/bin/redoak-launcher
