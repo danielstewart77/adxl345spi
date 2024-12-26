@@ -41,11 +41,19 @@ class TitleBar(QWidget):
         self.setFixedHeight(30)  # Set a fixed height for the title bar
         self.setStyleSheet("background-color: #333; color: white;") # Example styling
 
-        self.title_label = QLabel("My App") # Title Label
+        self.title_label = QLabel("RedOak Instruments") # Title Label
         self.title_label.setStyleSheet("padding-left:10px;")
 
         self.close_button = QPushButton("X")
-        self.close_button.setStyleSheet("background-color: #ff5555; border: none; font-weight: bold; padding: 5px;")
+        self.close_button.setStyleSheet("""
+            background-color: #ff5555; 
+            border: none; 
+            font-weight: bold; 
+            padding: 5px;
+            font-size: 16px;  /* Increase font size */
+            color: white;     /* Change text color to white for contrast */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);  /* Add a subtle shadow */
+        """)
         self.close_button.clicked.connect(parent.close)
 
         layout = QHBoxLayout()
