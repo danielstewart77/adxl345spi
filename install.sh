@@ -74,6 +74,7 @@ if [ ! -f "$INSTALL_DIR/adxl345spi" ]; then
         echo "Compilation failed. Exiting."
         exit 1
     fi
+    echo "adxl345spi compiled successfully"
 else
     echo "adxl345spi found."
 fi
@@ -84,7 +85,7 @@ chmod +x "$INSTALL_DIR/web.py"
 # Create a launcher script
 cat <<EOF > /usr/local/bin/redoak-launcher
 #!/bin/bash
-"$VENV_DIR/bin/python" "$INSTALL_DIR/app/web.py"
+"python3 $INSTALL_DIR/web.py"
 EOF
 chmod +x /usr/local/bin/redoak-launcher
 
@@ -119,13 +120,22 @@ Type=Application
 Name=RedOak
 Comment=Launch RedOak application
 Exec=/usr/local/bin/redoak-launcher
-Icon=utilities-terminal
+Icon=/opt/redoak/static/icon.png
 Terminal=false
 Categories=Utility;
 EOF
 
 # Ensure proper permissions
 chmod +x "$SHORTCUT_FILE"
+
 echo "Shortcut added to taskbar successfully."
+
+# Add shortcut to the Ubuntu user's taskbar (for GNOME)
+USER_DIR="/home/ubuntu/.local/share/applications"
+USER_SHORTCUT_FILE="$USER_DIR/redoak.desktop"
+
+mkdir -p "$USER_DIR"
+cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
+gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed -e "s/]$/, 'redoak.desktop']/")"
 
 echo "Installation complete. RedOak is ready to use."
