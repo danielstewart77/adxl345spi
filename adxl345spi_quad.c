@@ -194,7 +194,7 @@ void stopDataCollection() {
 }
 
 void listenForCommands() {
-    const char *fifo = "./adxl345spi_fifo";
+    const char *fifo = "adxl345spi_fifo";
     unlink(fifo);  // Remove any existing FIFO file to clear previous contents
     mkfifo(fifo, 0666);
 
