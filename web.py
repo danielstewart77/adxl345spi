@@ -51,12 +51,13 @@ class TitleBar(QWidget):
                 border: none; 
                 font-weight: bold; 
                 padding: 5px;
+                padding-bottom: 2px;
                 font-size: 20px;  /* Increase font size further */
                 color: white;
                 text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
                 font-family: 'Arial'; /* or any font you know works well */
-                min-width: 20px;  /* Ensure button has enough space */
-                min-height: 20px;
+                min-width: 10px;  /* Ensure button has enough space */
+                min-height: 10px;
             }
         """)
         self.close_button.clicked.connect(parent.close)
