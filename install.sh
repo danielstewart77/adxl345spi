@@ -50,6 +50,11 @@ if [ ! -d "$INSTALL_DIR" ]; then
     mkdir -p "$INSTALL_DIR"
 fi
 
+# Clone the Git repository
+if [ ! -d "$INSTALL_DIR" ]; then
+    git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
+fi
+
 # Create a virtual environment
 echo "Creating virtual environment..."
 python3 -m venv "$VENV_DIR"
@@ -73,13 +78,8 @@ else
     echo "adxl345spi found."
 fi
 
-# Clone the Git repository if necessary
-if [ ! -d "$INSTALL_DIR/app" ]; then
-    git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR/app"
-fi
-
 # Make the Python script executable
-chmod +x "$INSTALL_DIR/app/web.py"
+chmod +x "$INSTALL_DIR/web.py"
 
 # Create a launcher script
 cat <<EOF > /usr/local/bin/redoak-launcher
@@ -106,5 +106,26 @@ EOF
 # Enable and start the systemd service
 systemctl enable redoak.service
 systemctl start redoak.service
+
+# Add shortcut to Raspberry Pi OS taskbar
+echo "Adding RedOak shortcut to Raspberry Pi taskbar..."
+MENU_DIR="/usr/share/applications"
+SHORTCUT_FILE="$MENU_DIR/redoak.desktop"
+
+cat <<EOF > "$SHORTCUT_FILE"
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RedOak
+Comment=Launch RedOak application
+Exec=/usr/local/bin/redoak-launcher
+Icon=utilities-terminal
+Terminal=false
+Categories=Utility;
+EOF
+
+# Ensure proper permissions
+chmod +x "$SHORTCUT_FILE"
+echo "Shortcut added to taskbar successfully."
 
 echo "Installation complete. RedOak is ready to use."
