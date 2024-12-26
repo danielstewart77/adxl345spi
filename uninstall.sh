@@ -5,4 +5,5 @@ sudo rm -f /etc/systemd/system/redoak.service
 sudo systemctl disable redoak.service
 sudo systemctl stop redoak.service
 sudo systemctl daemon-reload
-rm -f /usr/local/bin/redoak-launcher
+sudo rm -f -r /opt/redoak
+sudo rm -f /usr/local/bin/redoak-launcher

@@ -85,7 +85,8 @@ chmod +x "$INSTALL_DIR/web.py"
 # Create a launcher script
 cat <<EOF > /usr/local/bin/redoak-launcher
 #!/bin/bash
-"python3 $INSTALL_DIR/web.py"
+echo "launching python app"
+python3 "$INSTALL_DIR/web.py"
 EOF
 chmod +x /usr/local/bin/redoak-launcher
 
