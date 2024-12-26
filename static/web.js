@@ -31,7 +31,11 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await fetch('/quit');
       if (response.ok) {
-        statusField.textContent = 'Status: Quit';
+        console.error('Error quitting:', response);
+        statusField.textContent = `Status: ${response}`;
+      }
+      else {
+        statusField.textContent = `Status: ${response}`;
       }
     } catch (error) {
       console.error('Error quitting:', error);
