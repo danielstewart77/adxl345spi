@@ -73,7 +73,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowFlags(Qt.FramelessWindowHint) # Remove window frame
-        self.setWindowTitle("My App")
+        self.setWindowTitle("RedOak Instruments")
         self.setGeometry(0, 0, 1920, 1080)
         self.setStyleSheet("background-color: #222;") # Example styling
 
