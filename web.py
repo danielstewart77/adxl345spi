@@ -1,5 +1,6 @@
+import os
 from flask import Flask, render_template, request
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl
 import sys
@@ -25,25 +26,8 @@ def stop():
 
 @app.route('/quit')
 def quit():
-    try:
-
-        def shutdown_server():
-            func = request.environ.get('werkzeug.server.shutdown')
-            if func is None:
-                raise RuntimeError('Not running with the Werkzeug Server')
-            func()
-
-        shutdown_server()
-
-        # Wait for Flask thread to (hopefully) finish processing requests
-        flask_thread.join(timeout=1)
-
-        # Terminate the process
-        os._exit(0)
-
-        return 'Server shutting down...'
-    except Exception as e:
-        return f"Error: {e}"
+    quit_application()
+    return 'quit'
 
 def run_flask():
     """Run the Flask app."""
@@ -53,9 +37,14 @@ def run_flask():
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("My App")
+        self.setWindowTitle("RedOak Instruments")
         self.setGeometry(0, 0, 1920, 1080)  # Set fullscreen dimensions
         self.showFullScreen()
+
+        # Create close button
+        self.close_button = QPushButton("X")
+        self.close_button.setStyleSheet("font-size: 16px; font-weight: bold")  # Optional styling
+        self.close_button.clicked.connect(self.close)  # Connect click event to close method
 
         # Web component
         layout = QVBoxLayout()
