@@ -31,8 +31,8 @@ def quit():
         flask_thread.join(timeout=1)  # Wait for 1 second for Flask thread to finish
 
         sys.exit(0)  # Graceful termination
-    except RuntimeError as e:  # Handle potential timeout or other errors
-        return e.Message 
+    except Error as e:  # Handle potential timeout or other errors
+        return e.__str__() 
 
     return 'Server shutting down...'
 
