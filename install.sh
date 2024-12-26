@@ -1,6 +1,17 @@
 #!/bin/bash
 
-sh uninstall.sh
+# first, remove old installations
+echo "Removing any existing installations..."
+sudo dpkg -r redoak-launcher
+sudo dpkg --purge redoak-launcher
+sudo rm -f /usr/share/applications/redoak.desktop
+sudo rm -f /etc/systemd/system/redoak.service
+sudo systemctl disable redoak.service
+sudo systemctl stop redoak.service
+sudo systemctl daemon-reload
+sudo rm -f -r /opt/redoak
+sudo rm -f /usr/local/bin/redoak-launcher
+ech "Finished cleaning up. Proceeding with installation."
 
 # Helper function to check if a command exists
 command_exists() {
