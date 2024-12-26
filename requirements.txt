@@ -1,3 +1,0 @@
-flask
-PyQt5
-PyQtWebEngine
