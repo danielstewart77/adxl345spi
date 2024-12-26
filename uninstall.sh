@@ -1,5 +1,5 @@
-sudo dpkg -r redoak-installer
-sudo dpkg --purge redoak-installer
+sudo dpkg -r redoak-launcher
+sudo dpkg --purge redoak-launcher
 sudo rm -f /usr/share/applications/redoak.desktop
 sudo rm -f /etc/systemd/system/redoak.service
 sudo systemctl disable redoak.service
