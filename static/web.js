@@ -29,17 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('quitButton').addEventListener('click', async () => {
     try {
-      const response = await fetch('/quit');
-      if (response.ok) {
-        console.error('Error quitting:', response.textContent);
-        statusField.textContent = `Status: ${response.textContent}`;
-      }
-      else {
-        statusField.textContent = `Status: ${response.textContent}`;
-      }
+        const response = await fetch('/quit');
+        if (response.ok) {
+            const text = await response.text(); // Get the text content
+            console.log('Quit response:', text); //Use console.log for successful requests
+            statusField.textContent = `Status: ${text}`;
+        } else {
+            const errorText = await response.text(); // Get error text as well
+            console.error('Error quitting:', errorText);
+            statusField.textContent = `Status: Error: ${response.status} - ${errorText}`;
+        }
     } catch (error) {
-      console.error('Error quitting:', error);
-      statusField.textContent = 'Status: Error Quitting';
+        console.error('Error quitting:', error);
+        statusField.textContent = 'Status: Error Quitting';
     }
   });
 });
