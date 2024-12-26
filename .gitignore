@@ -1,6 +1,9 @@
 # Ignore the virtual environment directory
 venv/
 
+# Ignore the compiled driver executable
+adxl345spi
+
 # Ignore node_modules directory
 node_modules/
 
