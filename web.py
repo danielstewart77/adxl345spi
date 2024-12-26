@@ -17,6 +17,7 @@ def index():
 
 @app.route('/start')
 def start():
+    os.chdir('/opt/redoak/')  # Change to the correct directory
     start_application()
     return 'start'
 
