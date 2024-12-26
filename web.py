@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl
@@ -23,7 +23,7 @@ def stop():
     stop_application()
     return 'stop'
 
-@app.route('/quit', methods=['POST'])  # Use POST for safety
+@app.route('/quit')
 def quit():
     try:
 
