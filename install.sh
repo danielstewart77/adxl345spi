@@ -144,14 +144,14 @@ EOF
 # Ensure proper permissions
 chmod +x "$SHORTCUT_FILE"
 
-echo "Shortcut added to taskbar successfully."
+echo "Shortcut added to accessories successfully."
 
-# Add shortcut to the Ubuntu user's taskbar (for GNOME)
-# USER_DIR="/home/ubuntu/.local/share/applications"
-# USER_SHORTCUT_FILE="$USER_DIR/redoak.desktop"
+# Determine the current user's home directory
+USER_DIR="$HOME/Desktop"
+USER_SHORTCUT_FILE="$USER_DIR/$(basename "$SHORTCUT_FILE")"
 
-# mkdir -p "$USER_DIR"
-# cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
-# gsettings set org.gnome.shell favorite-apps "$(gsettings get org.gnome.shell favorite-apps | sed -e "s/]$/, 'redoak.desktop']/")"
+mkdir -p "$USER_DIR"
+cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
 
+echo "Shortcut added to desktop successfully."
 echo "Installation complete. RedOak is ready to use."
