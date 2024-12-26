@@ -51,7 +51,9 @@ if [ ! -d "$INSTALL_DIR" ]; then
 fi
 
 # Clone the Git repository
+echo "Cloning the adxl345spi repo"
 git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
+echo "adxl345spi cloned to " + $INSTALL_DIR
 
 # Create a virtual environment
 echo "Creating virtual environment..."
