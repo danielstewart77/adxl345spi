@@ -26,7 +26,15 @@ def stop():
 @app.route('/quit')
 def quit():
     quit_application()
-    exit()
+    try:
+            # Assuming your Flask thread has a reference (e.g., flask_thread)
+            flask_thread.join(timeout=1)  # Wait for 1 second for Flask thread to finish
+        except RuntimeError:  # Handle potential timeout or other errors
+            pass
+
+        sys.exit(0)  # Graceful termination
+
+    return 'Server shutting down...'
 
 def run_flask():
     """Run the Flask app."""
