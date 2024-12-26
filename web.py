@@ -26,7 +26,7 @@ def stop():
 @app.route('/quit')
 def quit():
     quit_application()
-    return 'quit'
+    exit()
 
 def run_flask():
     """Run the Flask app."""
