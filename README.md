@@ -1,10 +1,12 @@
-# download install script
-here: https://github.com/danielstewart77/adxl345spi/blob/main/install.sh
-and download the raw file: ![image](https://github.com/user-attachments/assets/5c85f52d-070d-4070-8cb9-58e2e8de1353)
+# Installation Instructions
+
+### download and run the install script
+1. navigate here: https://github.com/danielstewart77/adxl345spi/blob/main/install.sh
+2. download the raw file: ![image](https://github.com/user-attachments/assets/5c85f52d-070d-4070-8cb9-58e2e8de1353)
  
-# run the install script:
-in a terminal, navigate to the directory where the `install.sh` script was downloaded
-then run the command: `sudo bash install.sh`
+### run the install script:
+1. in a terminal, navigate to the directory where the `install.sh` script was downloaded
+2. run the command: `sudo bash install.sh`
 
 ## ADXL345 Controller Script
 
