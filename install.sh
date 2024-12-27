@@ -64,18 +64,7 @@ fi
 # Clone the Git repository
 echo "Cloning the adxl345spi repo"
 git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
-echo "adxl345spi cloned to " + $INSTALL_DIR
-
-# Create a virtual environment
-# echo "Creating virtual environment..."
-# python3 -m venv "$VENV_DIR"
-
-# Activate the virtual environment and install dependencies
-# echo "Installing Python dependencies in the virtual environment..."
-# "$VENV_DIR/bin/pip" install --upgrade pip setuptools
-# if [ -f "$INSTALL_DIR/requirements.txt" ]; then
-#     "$VENV_DIR/bin/pip" install -r "$INSTALL_DIR/requirements.txt"
-# fi
+echo "adxl345spi cloned to $INSTALL_DIR"
 
 # Check if adxl345spi executable exists
 if [ ! -f "$INSTALL_DIR/adxl345spi" ]; then
@@ -124,8 +113,8 @@ EOF
 systemctl enable redoak.service
 systemctl start redoak.service
 
-# Add shortcut to Raspberry Pi OS taskbar
-echo "Adding RedOak shortcut to Raspberry Pi taskbar..."
+# Add shortcut to Raspberry Pi OS Accessories
+echo "Adding RedOak launcher shortcut to accessories..."
 MENU_DIR="/usr/share/applications"
 SHORTCUT_FILE="$MENU_DIR/redoak.desktop"
 
@@ -133,7 +122,7 @@ cat <<EOF > "$SHORTCUT_FILE"
 [Desktop Entry]
 Version=1.0
 Type=Application
-Name=RedOak
+Name=RedOak Launcher
 Comment=Launch RedOak application
 Exec=/usr/local/bin/redoak-launcher
 Icon=/opt/redoak/static/icon.png
@@ -146,6 +135,70 @@ chmod +x "$SHORTCUT_FILE"
 
 echo "Shortcut added to accessories successfully."
 
+# update script location
+UPDATE_DIR = "$INSTALL_DIR/update.sh"
+# make it executable
+chmod +x "$UPDATE_FILE"
+
+# Add shortcut to Raspberry Pi OS Accessories
+echo "Adding RedOak updater shortcut to accessories..."
+
+# Create a updater script
+cat <<EOF > /usr/local/bin/redoak-updater
+#!/bin/bash
+echo "launching RedOak updater"
+python3 "$UPDATE_FILE"
+EOF
+chmod +x /usr/local/bin/redoak-updater
+
+
+MENU_DIR="/usr/share/applications"
+SHORTCUT_FILE="$MENU_DIR/redoak.desktop"
+
+cat <<EOF > "$SHORTCUT_FILE"
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RedOak Updater
+Comment=Launch RedOak application
+Exec=/usr/local/bin/redoak-updater
+Icon=/opt/redoak/static/icon.png
+Terminal=false
+Categories=Utility;
+EOF
+
+# uninstall script location
+UNINSTALL_FILE = "$INSTALL_DIR/uninstall.sh"
+# make it executable
+chmod +x "$UNINSTALL_FILE"
+
+# Add shortcut to Raspberry Pi OS Accessories
+echo "Adding RedOak uninstaller shortcut to accessories..."
+
+# Create a updater script
+cat <<EOF > /usr/local/bin/redoak-uninstaller
+#!/bin/bash
+echo "launching RedOak uninstaller"
+python3 "$UPDATE_FILE"
+EOF
+chmod +x /usr/local/bin/redoak-uninstaller
+
+
+MENU_DIR="/usr/share/applications"
+SHORTCUT_FILE="$MENU_DIR/redoak.desktop"
+
+cat <<EOF > "$SHORTCUT_FILE"
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=RedOak Uninstaller
+Comment=Launch RedOak application
+Exec=/usr/local/bin/redoak-uninstaller
+Icon=/opt/redoak/static/icon.png
+Terminal=false
+Categories=Utility;
+EOF
+
 # Determine the current user's home directory
 USER_DIR="$HOME/Desktop"
 USER_SHORTCUT_FILE="$USER_DIR/$(basename "$SHORTCUT_FILE")"
@@ -154,4 +207,4 @@ mkdir -p "$USER_DIR"
 cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
 
 echo "Shortcut added to desktop successfully."
-echo "Installation complete. RedOak is ready to use."
+echo "Installation complete. RedOak is ready to use. Shortcuts for uninstall and update scripts have been placed at /opt/redoak/."
