@@ -1,11 +1,10 @@
-# install python (if not already installed)
-`sudo apt-get install python3`
-
-# clone repo:
-`git clone https://github.com/danielstewart77/adxl345spi.git`
-
-# launch console app in virtual environment:
-`venv/bin/python3 console_driver.py`
+# download install script
+here: https://github.com/danielstewart77/adxl345spi/blob/main/install.sh
+and download the raw file: ![image](https://github.com/user-attachments/assets/5c85f52d-070d-4070-8cb9-58e2e8de1353)
+ 
+# run the install script:
+in a terminal, navigate to the directory where the `install.sh` script was downloaded
+then run the command: `sudo bash install.sh`
 
 ## ADXL345 Controller Script
 
@@ -17,7 +16,7 @@ This Python script is designed to interface with the ADXL345 accelerometer via a
    - The `execute_command(command)` function is used to run shell commands. It employs `subprocess.Popen` to execute the command in a shell environment. If the command fails, it catches the error and prints an error message.
 
 2. **Application Control:**
-   - **`start_application()`**: Sends a "start" command to the `/tmp/adxl345spi_fifo` file to initiate data collection.
+   - **`start_application()`**: Sends a "start" command to the `adxl345spi_fifo` file to initiate data collection.
    - **`stop_application()`**: Sends a "stop" command to halt data collection.
    - **`quit_application()`**: Sends a "quit" command to terminate the data collection process.
 
@@ -29,8 +28,3 @@ This Python script is designed to interface with the ADXL345 accelerometer via a
    - The script starts by recording data to a CSV file with a timestamped filename.
    - It sets file permissions for the FIFO used to send commands.
    - The user interacts with the application through a text-based menu to control data collection.
-
-### Requirements
-
-- The script is designed to be run from the command line.
-- Requires appropriate permissions to execute the commands successfully.
