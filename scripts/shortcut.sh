@@ -29,7 +29,7 @@ USER_SHORTCUT_FILE="$USER_DIR/$(basename "$SHORTCUT_FILE")"
 mkdir -p "$USER_DIR"
 cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
 
-echo Launcher shortcut added to desktop."
+echo "Launcher shortcut added to desktop."
 
 
 # Add shortcut to Raspberry Pi OS Accessories
