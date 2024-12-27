@@ -24,7 +24,7 @@ git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
 echo "adxl345spi cloned to $INSTALL_DIR"
 
 # first, remove old installations
-#sh "$INSTALL_DIR/scripts/rm_old_inst.sh"
+sh "$INSTALL_DIR/scripts/rm_old_inst.sh"
 
 # Helper function to check if a command exists
 command_exists() {
@@ -52,4 +52,5 @@ sh "$INSTALL_DIR/scripts/service.sh"
 # Add shortcuts to Raspberry Pi OS Accessories
 sh "$INSTALL_DIR/scripts/shortcut.sh"
 
-echo "Installation complete. RedOak is ready to use. Shortcuts for uninstall and update scripts have been placed at /opt/redoak/."
+echo "Installation complete."
+echo "Shortcuts for launcher, update and uninstall are located in the Accessories menu."
