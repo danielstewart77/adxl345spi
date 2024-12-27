@@ -1,60 +1,15 @@
 #!/bin/bash
 
 # first, remove old installations
-echo "Removing any existing installations..."
-sudo rm -f /usr/share/applications/redoak.desktop
-sudo rm -f /etc/systemd/system/redoak.service
-sudo systemctl disable redoak.service
-sudo systemctl stop redoak.service
-sudo systemctl daemon-reload
-sudo rm -f -r /opt/redoak
-sudo rm -f /usr/local/bin/redoak-launcher
-echo "Finished cleaning up. Proceeding with installation."
+sh "$INSTALL_DIR/scripts/rm_old_inst.sh"
 
 # Helper function to check if a command exists
 command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Ensure no other apt processes are running with a timeout
-timeout=30  # 30 seconds timeout
-while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
-    echo "Waiting for other apt processes to finish..."
-    sleep 2
-    timeout=$((timeout - 2))
-    if [ $timeout -le 0 ]; then
-        echo "Timeout reached while waiting for apt lock. Exiting."
-        exit 1
-    fi
-done
-
-# Check if required packages are installed
-install_packages() {
-    packages=(git python3 python3-pip python3-flask python3-pyqt5 python3-pyqt5.qtwebengine build-essential python3-dev python3-sip python3-sip-dev qtbase5-dev qttools5-dev-tools libqt5webkit5-dev gcc)
-    for pkg in "${packages[@]}"; do
-        if ! dpkg -l | grep -qw "$pkg"; then
-            echo "$pkg is not installed. Attempting to install..."
-            sudo apt update
-            sudo apt install -y "$pkg" || {
-                echo "Retrying with fix-broken for $pkg..."
-                sudo apt --fix-broken install -y
-                sudo apt install -y "$pkg" || {
-                    echo "Failed to install $pkg even after fix-broken. Exiting."
-                    exit 1
-                }
-            }
-        else
-            echo "$pkg is already installed."
-        fi
-    done
-}
-
-# Run package installation
-install_packages
-
-# Define the installation directory and virtual environment path
-INSTALL_DIR="/opt/redoak"
-VENV_DIR="$INSTALL_DIR/venv"
+# install packages
+sh "$INSTALL_DIR/scripts/package.sh"
 
 # Create the installation directory if it doesn't exist
 if [ ! -d "$INSTALL_DIR" ]; then
@@ -62,149 +17,22 @@ if [ ! -d "$INSTALL_DIR" ]; then
 fi
 
 # Clone the Git repository
-echo "Cloning the adxl345spi repo"
-git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
-echo "adxl345spi cloned to $INSTALL_DIR"
-
-# Check if adxl345spi executable exists
-if [ ! -f "$INSTALL_DIR/adxl345spi" ]; then
-    echo "adxl345spi not found, compiling..."
-    gcc "$INSTALL_DIR/adxl345spi_quad.c" -o "$INSTALL_DIR/adxl345spi" -lpigpio -pthread
-    if [ $? -ne 0 ]; then
-        echo "Compilation failed. Exiting."
-        exit 1
-    fi
-    echo "adxl345spi compiled successfully"
-else
-    echo "adxl345spi found."
-fi
-
-# Make the Python script executable
-chmod +x "$INSTALL_DIR/web.py"
+sh "$INSTALL_DIR/scripts/repo.sh"
 
 # give the user ownership of the installation directory
 sudo chown -R $USER:$USER "$INSTALL_DIR"
 sudo chmod -R 755 "$INSTALL_DIR"
 
-# Create a launcher script
-cat <<EOF > /usr/local/bin/redoak-launcher
-#!/bin/bash
-echo "launching python app"
-python3 "$INSTALL_DIR/web.py"
-EOF
-chmod +x /usr/local/bin/redoak-launcher
+# Create the virtual environment
+sh "$INSTALL_DIR/scripts/venv.sh"
 
-# Configure system startup
-cat <<EOF > /etc/systemd/system/redoak.service
-[Unit]
-Description=RedOak Service
-After=network.target
+# Create a launcher, updater, and uninstaller scripts
+sh "$INSTALL_DIR/scripts/launcher.sh"
 
-[Service]
-Type=simple
-ExecStart=/usr/local/bin/redoak-launcher
-Restart=always
+# Create a systemd service
+sh "$INSTALL_DIR/scripts/service.sh"
 
-[Install]
-WantedBy=default.target
-EOF
+# Add shortcuts to Raspberry Pi OS Accessories
+sh "$INSTALL_DIR/scripts/shortcut.sh"
 
-# Enable and start the systemd service
-systemctl enable redoak.service
-systemctl start redoak.service
-
-# Add shortcut to Raspberry Pi OS Accessories
-echo "Adding RedOak launcher shortcut to accessories..."
-MENU_DIR="/usr/share/applications"
-SHORTCUT_FILE="$MENU_DIR/redoak.desktop"
-
-cat <<EOF > "$SHORTCUT_FILE"
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=RedOak Launcher
-Comment=Launch RedOak application
-Exec=/usr/local/bin/redoak-launcher
-Icon=/opt/redoak/static/icon.png
-Terminal=false
-Categories=Utility;
-EOF
-
-# Ensure proper permissions
-chmod +x "$SHORTCUT_FILE"
-
-echo "Shortcut added to accessories successfully."
-
-# update script location
-UPDATE_DIR = "$INSTALL_DIR/update.sh"
-# make it executable
-chmod +x "$UPDATE_FILE"
-
-# Add shortcut to Raspberry Pi OS Accessories
-echo "Adding RedOak updater shortcut to accessories..."
-
-# Create a updater script
-cat <<EOF > /usr/local/bin/redoak-updater
-#!/bin/bash
-echo "launching RedOak updater"
-python3 "$UPDATE_FILE"
-EOF
-chmod +x /usr/local/bin/redoak-updater
-
-
-MENU_DIR="/usr/share/applications"
-SHORTCUT_FILE="$MENU_DIR/redoak.desktop"
-
-cat <<EOF > "$SHORTCUT_FILE"
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=RedOak Updater
-Comment=Launch RedOak application
-Exec=/usr/local/bin/redoak-updater
-Icon=/opt/redoak/static/icon.png
-Terminal=false
-Categories=Utility;
-EOF
-
-# uninstall script location
-UNINSTALL_FILE = "$INSTALL_DIR/uninstall.sh"
-# make it executable
-chmod +x "$UNINSTALL_FILE"
-
-# Add shortcut to Raspberry Pi OS Accessories
-echo "Adding RedOak uninstaller shortcut to accessories..."
-
-# Create a updater script
-cat <<EOF > /usr/local/bin/redoak-uninstaller
-#!/bin/bash
-echo "launching RedOak uninstaller"
-python3 "$UPDATE_FILE"
-EOF
-chmod +x /usr/local/bin/redoak-uninstaller
-
-
-MENU_DIR="/usr/share/applications"
-SHORTCUT_FILE="$MENU_DIR/redoak.desktop"
-
-cat <<EOF > "$SHORTCUT_FILE"
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=RedOak Uninstaller
-Comment=Launch RedOak application
-Exec=/usr/local/bin/redoak-uninstaller
-Icon=/opt/redoak/static/icon.png
-Terminal=false
-Categories=Utility;
-EOF
-
-# Determine the current user's home directory
-USER_DIR="$HOME/Desktop"
-USER_SHORTCUT_FILE="$USER_DIR/$(basename "$SHORTCUT_FILE")"
-
-mkdir -p "$USER_DIR"
-cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
-
-echo "Shortcut added to desktop successfully."
 echo "Installation complete. RedOak is ready to use. Shortcuts for uninstall and update scripts have been placed at /opt/redoak/."
