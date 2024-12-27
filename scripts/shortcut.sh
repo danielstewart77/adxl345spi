@@ -22,16 +22,6 @@ echo "Launcher shortcut added to accessories."
 chmod +x "$SHORTCUT_FILE"
 echo "Uninstaller shortcut added to accessories."
 
-# Determine the current user's home directory
-USER_DIR="$HOME/Desktop"
-USER_SHORTCUT_FILE="$USER_DIR/$(basename "$SHORTCUT_FILE")"
-
-mkdir -p "$USER_DIR"
-cp "$SHORTCUT_FILE" "$USER_SHORTCUT_FILE"
-
-echo "Launcher shortcut added to desktop."
-
-
 # Add shortcut to Raspberry Pi OS Accessories
 MENU_DIR="/usr/share/applications"
 SHORTCUT_FILE="$MENU_DIR/redoak_updater.desktop"
