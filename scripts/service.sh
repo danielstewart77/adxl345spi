@@ -17,4 +17,4 @@ EOF
 systemctl enable redoak.service
 systemctl start redoak.service
 
-cat "Created systemd service for RedOak."
+echo "Created systemd service for RedOak."
