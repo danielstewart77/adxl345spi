@@ -6,5 +6,5 @@ echo "Creating a virtual environment..."
 # Create a virtual environment
 python3 -m venv "$VENV_DIR"
 "$VENV_DIR/bin/pip3" install --upgrade pip
-"$VENV_DIR/bin/pip3"/bin/pip install -r "$INSTALL_DIR/requirements.txt"
+"$VENV_DIR/bin/pip3" install -r "$INSTALL_DIR/requirements.txt"
 echo "Virtual environment created."
