@@ -12,7 +12,7 @@ done
 
 # Check if required packages are installed
 install_packages() {
-    packages=(pigpio libpigpio-dev git python3 python3-pip python3-venv python3-flask python3-pyqt5 python3-pyqt5.qtwebengine build-essential python3-dev python3-sip python3-sip-dev qtbase5-dev qttools5-dev-tools libqt5webkit5-dev gcc)
+    packages=(pigpio libpigpio-dev git python3 python3-pip python3-venv build-essential python3-dev python3-sip python3-sip-dev gcc)
     for pkg in "${packages[@]}"; do
         if ! dpkg -l | grep -qw "$pkg"; then
             echo "$pkg is not installed. Attempting to install..."
