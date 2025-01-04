@@ -8,18 +8,6 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
-# Check the current swap size
-current_swap_size=$(swapon --show --noheadings | awk '{print $3}' | sed 's/M//')
-
-# If the swap size is less than 1024MB (1GB), call the swap.sh script
-if [ -z "$current_swap_size" ] || [ "$current_swap_size" -lt 1024 ]; then
-    echo "Current swap size is ${current_swap_size}MB. Adding a 1GB swap file..."
-    sh "$INSTALL_DIR/scripts/swap.sh"
-else
-    echo "Current swap size is ${current_swap_size}MB, which is sufficient."
-fi
-
-
 # Remove the installation directory if it exists
 if [ -d "$INSTALL_DIR" ]; then
     echo "Removing old installation..."
@@ -40,6 +28,17 @@ sudo chmod -R 755 "$INSTALL_DIR"
 echo "Cloning the adxl345spi repo"
 git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
 echo "adxl345spi cloned to $INSTALL_DIR"
+
+# Check the current swap size
+current_swap_size=$(swapon --show --noheadings | awk '{print $3}' | sed 's/M//')
+
+# If the swap size is less than 1024MB (1GB), call the swap.sh script
+if [ -z "$current_swap_size" ] || [ "$current_swap_size" -lt 1024 ]; then
+    echo "Current swap size is ${current_swap_size}MB. Adding a 1GB swap file..."
+    sh "$INSTALL_DIR/scripts/swap.sh"
+else
+    echo "Current swap size is ${current_swap_size}MB, which is sufficient."
+fi
 
 # first, remove old installations
 sh "$INSTALL_DIR/scripts/rm_old_inst.sh"
