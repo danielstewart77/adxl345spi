@@ -13,9 +13,17 @@ done
 # Check if required packages are installed
 install_packages() {
     packages=(
-    pigpio libpigpio-dev git python3 python3-pip python3-venv 
-    build-essential python3-dev python3-sip python3-sip-dev gcc
-    qt5-qmake qt5-default qtbase5-dev qttools5-dev-tools
+    pigpio 
+    libpigpio-dev 
+    git 
+    python3 
+    python3-pip 
+    python3-venv 
+    build-essential 
+    python3-dev 
+    gcc
+    python3-pyqt5
+    python3-pyqt5.qtopengl
     )
 
     for pkg in "${packages[@]}"; do
