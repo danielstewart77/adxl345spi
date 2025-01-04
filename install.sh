@@ -8,11 +8,17 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
-# Check the swap size
-if [ "$(swapon --show | wc -l)" -eq 1 ]; then
-    echo "Swap size is 0. Adding a 1GB swap file..."
+# Check the current swap size
+current_swap_size=$(swapon --show --noheadings | awk '{print $3}' | sed 's/M//')
+
+# If the swap size is less than 1024MB (1GB), call the swap.sh script
+if [ -z "$current_swap_size" ] || [ "$current_swap_size" -lt 1024 ]; then
+    echo "Current swap size is ${current_swap_size}MB. Adding a 1GB swap file..."
     sh "$INSTALL_DIR/scripts/swap.sh"
+else
+    echo "Current swap size is ${current_swap_size}MB, which is sufficient."
 fi
+
 
 # Remove the installation directory if it exists
 if [ -d "$INSTALL_DIR" ]; then
