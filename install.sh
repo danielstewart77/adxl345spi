@@ -2,6 +2,18 @@
 
 INSTALL_DIR="/opt/redoak"
 
+# Check if the script is being run as root
+if [ "$EUID" -ne 0 ]; then
+    echo "Please run as root."
+    exit
+fi
+
+# Check the swap size
+if [ "$(swapon --show | wc -l)" -eq 1 ]; then
+    echo "Swap size is 0. Adding a 1GB swap file..."
+    sh "$INSTALL_DIR/scripts/swap.sh"
+fi
+
 # Remove the installation directory if it exists
 if [ -d "$INSTALL_DIR" ]; then
     echo "Removing old installation..."
