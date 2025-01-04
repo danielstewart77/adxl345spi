@@ -36,9 +36,9 @@ echo "adxl345spi cloned to $INSTALL_DIR"
 # Check the current swap size
 current_swap_size=$(swapon --show --noheadings | awk '{print $3}' | sed 's/M//')
 
-# If the swap size is less than 1024MB (1GB), call the swap.sh script
-if [ -z "$current_swap_size" ] || [ "$current_swap_size" -lt 1024 ]; then
-    echo "Current swap size is ${current_swap_size}MB. Adding a 1GB swap file..."
+# If the swap size is less than 2048MB (2GB), call the swap.sh script
+if [ -z "$current_swap_size" ] || [ "$current_swap_size" -lt 2048 ]; then
+    echo "Current swap size is ${current_swap_size}MB. Adding a 2GB swap file..."
     sh "$INSTALL_DIR/scripts/swap.sh"
 else
     echo "Current swap size is ${current_swap_size}MB, which is sufficient."

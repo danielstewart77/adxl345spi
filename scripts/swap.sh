@@ -1,21 +1,21 @@
-# Add this to your install script to configure a 1GB swap size
+#!/bin/bash
 
-echo "Configuring a 1GB swap file..."
+echo "Creating a 2GB swap file..."
 
-# Turn off any existing swap
-sudo dphys-swapfile swapoff
+# Turn off existing swap
+sudo swapoff -a
 
-# Update the swap file configuration to set 1GB
-sudo sed -i 's/^CONF_SWAPSIZE=.*/CONF_SWAPSIZE=1024/' /etc/dphys-swapfile
+# Create a new 2GB swap file
+sudo dd if=/dev/zero of=/swapfile bs=1M count=2048 status=progress
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
 
-# Reinitialize the swap file with the new size
-sudo dphys-swapfile setup
+# Enable the new swap file
+sudo swapon /swapfile
 
-# Turn on the swap file
-sudo dphys-swapfile swapon
+# Update /etc/fstab to make it permanent
+if ! grep -q '/swapfile' /etc/fstab; then
+    echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+fi
 
-# Verify the swap size
-echo "Swap configuration updated. Current swap status:"
-sudo swapon --show
-
-echo "1GB swap size configured successfully."
+echo "2GB swap file created and enabled."
