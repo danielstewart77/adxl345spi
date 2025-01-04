@@ -33,11 +33,17 @@ echo "Cloning the adxl345spi repo"
 git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
 echo "adxl345spi cloned to $INSTALL_DIR"
 
-# Check the current swap size
-current_swap_size=$(swapon --show --noheadings | awk '{print $3}' | sed 's/M//')
+# Get the current swap size in MB (ensure the output is a number)
+current_swap_size=$(free --mega | awk '/Swap:/ {print $2}')
+
+# Validate the value of current_swap_size
+if [ -z "$current_swap_size" ] || ! [[ "$current_swap_size" =~ ^[0-9]+$ ]]; then
+    echo "Failed to determine the current swap size. Setting to 0MB."
+    current_swap_size=0
+fi
 
 # If the swap size is less than 2048MB (2GB), call the swap.sh script
-if [ -z "$current_swap_size" ] || [ "$current_swap_size" -lt 2048 ]; then
+if [ "$current_swap_size" -lt 2048 ]; then
     echo "Current swap size is ${current_swap_size}MB. Adding a 2GB swap file..."
     sh "$INSTALL_DIR/scripts/swap.sh"
 else
