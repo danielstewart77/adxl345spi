@@ -8,12 +8,16 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
+echo "Removing any existing installations..."
 # Remove the installation directory if it exists
 if [ -d "$INSTALL_DIR" ]; then
     echo "Removing old installation..."
     sudo rm -r "$INSTALL_DIR"
     echo "Old installation removed."
 fi
+sudo rm -f /usr/share/applications/redoak.desktop
+sudo rm -f /usr/local/bin/redoak-launcher
+echo "Finished cleaning up. Proceeding with installation."
 
 # Create the installation directory if it doesn't exist
 if [ ! -d "$INSTALL_DIR" ]; then
@@ -39,9 +43,6 @@ if [ -z "$current_swap_size" ] || [ "$current_swap_size" -lt 1024 ]; then
 else
     echo "Current swap size is ${current_swap_size}MB, which is sufficient."
 fi
-
-# first, remove old installations
-sh "$INSTALL_DIR/scripts/rm_old_inst.sh"
 
 # Helper function to check if a command exists
 command_exists() {
