@@ -1,10 +1,11 @@
 # Create a launcher script
 INSTALL_DIR="/opt/redoak"
+VENV_DIR="$INSTALL_DIR/venv"
 
 cat <<EOF > /usr/local/bin/redoak-launcher
 #!/bin/bash
 echo "launching Redoak app"
-python3 "$INSTALL_DIR/web.py"
+"$VENV_DIR/bin/python3" "$INSTALL_DIR/web.py"
 EOF
 chmod +x /usr/local/bin/redoak-launcher
 echo created launcher script
