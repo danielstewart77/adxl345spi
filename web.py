@@ -1,8 +1,8 @@
 import os
 from flask import Flask, render_template
-from PySide2.QtCore import Qt, QUrl
-from PySide2.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QHBoxLayout
-from PySide2.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtCore import Qt, QUrl
+from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLabel, QHBoxLayout
+from PySide6.QtWebEngineWidgets import QWebEngineView
 import sys
 import threading
 from services.driver import start_application, stop_application, quit_application  # Import your functions
