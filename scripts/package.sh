@@ -53,16 +53,16 @@ else
 fi
 
 # Check if required packages are installed
-install_packages() {
-    packages=(
-        pigpio libpigpio-dev 
-        git 
-        python3 python3-pip python3-venv python3-dev 
-        build-essential gcc
-        libx11-dev libxcb1-dev libxcomposite-dev libxrender-dev  libwebp-dev libtiff5 libtiff-dev
-        libqt5webengine5 libqt5webenginewidgets5 qttools5-dev-tools
-        qtwebengine5-dev qtwebengine5-doc
+install_packages=(
+    pigpio libpigpio-dev 
+    git 
+    python3 python3-pip python3-venv 
+    build-essential gcc
+    python3-dev
+    qt5-qmake qt5-default qtbase5-dev qttools5-dev-tools
+    qtquickcontrols2-5-dev qtdeclarative5-dev libqt5svg5-dev
     )
+
 
     for pkg in "${packages[@]}"; do
         if ! dpkg -l | grep -qw "$pkg"; then
