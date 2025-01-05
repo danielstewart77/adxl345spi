@@ -24,6 +24,7 @@ install_packages() {
     gcc
     python3-pyqt5
     python3-pyqt5.qtopengl
+    python3-pyqt5.qtwebengine
     )
 
     for pkg in "${packages[@]}"; do
