@@ -5,8 +5,9 @@ VENV_DIR="$INSTALL_DIR/venv"
 cat <<EOF > /usr/local/bin/redoak-launcher
 #!/bin/bash
 echo "launching Redoak app"
-source "$VENV_DIR/bin/activate"
+. "$VENV_DIR/bin/activate"
 python3 "$INSTALL_DIR/web.py"
+deactivate
 EOF
 chmod +x /usr/local/bin/redoak-launcher
 echo created launcher script
