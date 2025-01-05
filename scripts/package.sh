@@ -59,7 +59,7 @@ install_packages() {
         git 
         python3 python3-pip python3-venv python3-dev 
         build-essential gcc
-        libx11-dev libxcb1-dev libxcomposite-dev libxrender-dev  libwebp-dev
+        libx11-dev libxcb1-dev libxcomposite-dev libxrender-dev  libwebp-dev libtiff5 libtiff-dev
         libqt5webengine5 libqt5webenginewidgets5 qttools5-dev-tools
         qtwebengine5-dev qtwebengine5-doc
     )
