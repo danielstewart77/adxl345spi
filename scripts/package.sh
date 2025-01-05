@@ -17,20 +17,37 @@ python_version=$(python3 --version 2>&1 | awk '{print $2}')
 python_major=$(echo $python_version | cut -d. -f1)
 python_minor=$(echo $python_version | cut -d. -f2)
 
-# Function to upgrade the OS
-upgrade_os() {
-    echo "Upgrading the OS to ensure Python >= 3.9 is available..."
+# Function to manually install a newer Python version
+install_new_python() {
+    echo "Installing Python 3.9+ manually..."
     sudo apt update
-    sudo apt full-upgrade -y
-    sudo apt dist-upgrade -y
-    sudo apt autoremove -y
-    sudo reboot
+    sudo apt install -y build-essential libssl-dev zlib1g-dev libncurses5-dev \
+        libgdbm-dev libnss3-dev libreadline-dev libffi-dev curl libbz2-dev
+
+    # Download and compile Python source
+    python_version_to_install="3.9.9"
+    curl -O https://www.python.org/ftp/python/$python_version_to_install/Python-$python_version_to_install.tgz
+    tar -xvf Python-$python_version_to_install.tgz
+    cd Python-$python_version_to_install || exit
+    ./configure --enable-optimizations
+    make -j$(nproc)
+    sudo make altinstall
+
+    # Verify installation
+    if command -v python3.9 >/dev/null 2>&1; then
+        echo "Python 3.9+ installed successfully."
+    else
+        echo "Failed to install Python 3.9+. Exiting."
+        exit 1
+    fi
+    cd ..
+    rm -rf Python-$python_version_to_install Python-$python_version_to_install.tgz
 }
 
-# Check Python version and decide whether to upgrade OS or proceed
+# Check Python version and decide whether to install a newer version
 if [ "$python_major" -lt 3 ] || { [ "$python_major" -eq 3 ] && [ "$python_minor" -lt 9 ]; }; then
-    echo "Python version is $python_version, which is less than 3.9. Upgrading the OS..."
-    upgrade_os
+    echo "Python version is $python_version, which is less than 3.9. Installing a newer version..."
+    install_new_python
 else
     echo "Python version is $python_version, which meets the requirement. Proceeding with package installation..."
 fi
