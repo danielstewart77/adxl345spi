@@ -60,8 +60,8 @@ install_packages() {
         python3 python3-pip python3-venv 
         build-essential gcc
         python3-dev
-        qt5-qmake qtchooser qtbase5-dev qttools5-dev-tools
-        qtquickcontrols2-5-dev qtdeclarative5-dev libqt5svg5-dev
+        python3 python3-pip
+        python3-pyqt5 python3-flask
         )
 
     for pkg in "${packages[@]}"; do
