@@ -20,10 +20,12 @@ echo "Creating a virtual environment with Python $python_version..."
 python3 -m venv "$VENV_DIR"
 
 # Activate the virtual environment
-source "$VENV_DIR/bin/activate"
+. "$VENV_DIR/bin/activate"
 
 # Upgrade pip and install dependencies
 pip3 install --upgrade pip
 pip3 install -r "$INSTALL_DIR/requirements.txt"
+
+deactivate
 
 echo "Virtual environment created successfully with Python $python_version."
