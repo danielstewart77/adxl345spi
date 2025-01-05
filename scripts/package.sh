@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Ensure no other apt processes are running with a timeout
 timeout=30  # 30 seconds timeout
 while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
@@ -10,16 +12,39 @@ while sudo fuser /var/lib/dpkg/lock >/dev/null 2>&1; do
     fi
 done
 
+# Check the repository version of Python3
+python_version=$(python3 --version 2>&1 | awk '{print $2}')
+python_major=$(echo $python_version | cut -d. -f1)
+python_minor=$(echo $python_version | cut -d. -f2)
+
+# Function to upgrade the OS
+upgrade_os() {
+    echo "Upgrading the OS to ensure Python >= 3.9 is available..."
+    sudo apt update
+    sudo apt full-upgrade -y
+    sudo apt dist-upgrade -y
+    sudo apt autoremove -y
+    sudo reboot
+}
+
+# Check Python version and decide whether to upgrade OS or proceed
+if [ "$python_major" -lt 3 ] || { [ "$python_major" -eq 3 ] && [ "$python_minor" -lt 9 ]; }; then
+    echo "Python version is $python_version, which is less than 3.9. Upgrading the OS..."
+    upgrade_os
+else
+    echo "Python version is $python_version, which meets the requirement. Proceeding with package installation..."
+fi
+
 # Check if required packages are installed
 install_packages() {
     packages=(
-    pigpio libpigpio-dev 
-    git 
-    python3 python3-pip python3-venv python3-dev 
-    build-essential gcc
-    libx11-dev libxcb1-dev libxcomposite-dev libxrender-dev 
-    libqt5webengine5 libqt5webenginewidgets5 qttools5-dev-tools
-    qtwebengine5-dev qtwebengine5-doc
+        pigpio libpigpio-dev 
+        git 
+        python3 python3-pip python3-venv python3-dev 
+        build-essential gcc
+        libx11-dev libxcb1-dev libxcomposite-dev libxrender-dev 
+        libqt5webengine5 libqt5webenginewidgets5 qttools5-dev-tools
+        qtwebengine5-dev qtwebengine5-doc
     )
 
     for pkg in "${packages[@]}"; do
@@ -42,4 +67,5 @@ install_packages() {
 
 # Run package installation
 install_packages
+
 echo "All required system packages are installed."
