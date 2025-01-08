@@ -60,8 +60,7 @@ install_packages() {
         python3 python3-pip python3-venv 
         build-essential gcc
         python3-dev
-        python3 python3-pip
-        python3-pyqt5 python3-flask python3-pyqt5.qtwebengine
+        libgtk-3-dev gir1.2-gtk-3.0 libgirepository1.0-dev python3-gi libcairo2-dev
         )
 
     for pkg in "${packages[@]}"; do
