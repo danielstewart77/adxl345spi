@@ -59,8 +59,8 @@ install_packages() {
         git 
         python3 python3-pip python3-venv 
         build-essential gcc
-        python3-dev
-        libgtk-3-dev gir1.2-gtk-3.0 libgirepository1.0-dev python3-gi libcairo2-dev
+        python3-dev python3-gi python3-gi-cairo
+        libgtk-3-dev gir1.2-gtk-3.0 libgirepository1.0-dev python3-gi libcairo2-dev libwebkit2gtk-4.0-dev
         )
 
     for pkg in "${packages[@]}"; do
