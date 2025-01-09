@@ -6,6 +6,7 @@ After=network.target
 
 [Service]
 Type=simple
+Environment="LIBGL_ALWAYS_SOFTWARE=1"
 ExecStart=/usr/local/bin/redoak-launcher
 Restart=always
 

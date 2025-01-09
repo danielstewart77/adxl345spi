@@ -76,8 +76,5 @@ sh "$INSTALL_DIR/scripts/service.sh"
 # Add shortcuts to Raspberry Pi OS Accessories
 sh "$INSTALL_DIR/scripts/shortcut.sh"
 
-# Disable hardware acceleration globally for GTK
-export LIBGL_ALWAYS_SOFTWARE=1
-
 echo "Installation complete."
 echo "Shortcuts for launcher, update and uninstall are located in the Accessories menu."
