@@ -30,7 +30,7 @@ sudo chmod -R 755 "$INSTALL_DIR"
 
 # Clone the Git repository
 echo "Cloning the adxl345spi repo"
-git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
+git clone --branch pywebview https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
 echo "adxl345spi cloned to $INSTALL_DIR"
 
 # Get the current swap size in MB (ensure the output is a number)
