@@ -4,7 +4,9 @@ VENV_DIR="$INSTALL_DIR/venv"
 
 cat <<EOF > /usr/local/bin/redoak-launcher
 #!/bin/bash
+export LIBGL_ALWAYS_SOFTWARE=1
 echo "launching Redoak app"
+. "$VENV_DIR/bin/activate"
 python3 "$INSTALL_DIR/web.py"
 deactivate
 EOF

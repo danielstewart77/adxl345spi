@@ -30,7 +30,7 @@ sudo chmod -R 755 "$INSTALL_DIR"
 
 # Clone the Git repository
 echo "Cloning the adxl345spi repo"
-git clone https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
+git clone --branch pywebview https://github.com/danielstewart77/adxl345spi "$INSTALL_DIR"
 echo "adxl345spi cloned to $INSTALL_DIR"
 
 # Get the current swap size in MB (ensure the output is a number)
@@ -43,12 +43,12 @@ if [ -z "$current_swap_size" ] || ! [[ "$current_swap_size" =~ ^[0-9]+$ ]]; then
 fi
 
 # If the swap size is less than 2048MB (2GB), call the swap.sh script
-if [ "$current_swap_size" -lt 2048 ]; then
-    echo "Current swap size is ${current_swap_size}MB. Adding a 2GB swap file..."
-    sh "$INSTALL_DIR/scripts/swap.sh"
-else
-    echo "Current swap size is ${current_swap_size}MB, which is sufficient."
-fi
+# if [ "$current_swap_size" -lt 2048 ]; then
+#     echo "Current swap size is ${current_swap_size}MB. Adding a 2GB swap file..."
+#     sh "$INSTALL_DIR/scripts/swap.sh"
+# else
+#     echo "Current swap size is ${current_swap_size}MB, which is sufficient."
+# fi
 
 # Helper function to check if a command exists
 command_exists() {
